@@ -22,8 +22,12 @@ jobs:
         java-version: '19'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
+    - name: Build and Analyse
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
       run: |
-        mvn clean verify sonar:sonar -Dsonar.login=9c9341942ae1eb8e0bd27f477233b0ff022b56d7 -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=meyy-innerpeace -Dsonar.projectKey=maven-sonar 
-        curl -s https://sonarcloud.io/api/qualitygates/project_status?projectKey=maven-sonar | jq ".projectStatus.status" && exit 1
+        mvn clean verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=meyy-innerpeace -Dsonar.projectKey=maven-sonar 
+        STATUS=`curl -s https://sonarcloud.io/api/qualitygates/project_status?projectKey=maven-sonar | jq ".projectStatus.status"`
+        if [ "$STATUS" == "ERROR" ]; then    echo "MATCH"; else    echo "NOT"; fi
       # run: mvn clean install
