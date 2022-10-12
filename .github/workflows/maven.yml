@@ -31,3 +31,4 @@ jobs:
         STATUS=`curl -s https://sonarcloud.io/api/qualitygates/project_status?projectKey=maven-sonar | jq ".projectStatus.status"`
         if [ "$STATUS" == "\"ERROR\"" ]; then    echo "Sonar Quality Gate Failed, Please check the Sonar log" && exit 1 ; fi
       # run: mvn clean install
+      
