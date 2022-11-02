@@ -33,7 +33,7 @@ jobs:
       run: |
         # ls
         # echo ${{ github.ref }}
-        ref="MATCH"
+        ref="1MATCH"
         if [[ ${ref} == "MATCH" ]]; then
           echo "MATCHED"
         else
